@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:parte2/componentes/player.dart';
 
 import '../CoinGame.dart';
-import 'fruit.dart';
 
 class Level extends World with HasGameRef<CoinGame>{
   final String levelName;
