@@ -2,7 +2,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import 'CoinGame.dart';
-import 'components/MainMenu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
