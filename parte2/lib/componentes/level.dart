@@ -3,23 +3,77 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 
-import 'player.dart';
+import '../CoinGame.dart';
+import 'fruit.dart';
 
-
-
-class Level extends World {
+class Level extends World with HasGameRef<CoinGame>{
+  final String levelName;
+  final Player player;
+  Level({required this.levelName, required this.player});
   late TiledComponent level;
+  List<CollisionBlock> collisionBlocks = [];
 
   @override
   Future<void> onLoad() async {
-    level = await TiledComponent.load('Level-01.tmx', Vector2.all(16));
+    level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);
-    add(
-      Player(
-          character: 'Mask Dude'
-      ),
-    );
+
+    _spawningObjects();
+    _addCollisions();
 
     return super.onLoad();
   }
+
+  void _spawningObjects() {
+    final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>('Spawnpoints');
+
+    if (spawnPointsLayer != null) {
+      for (final spawnPoint in spawnPointsLayer.objects) {
+        switch (spawnPoint.class_) {
+          case 'Player':
+            player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            add(player);
+            break;
+          case 'Fruit':
+            final fruit = Fruit(
+              fruit: spawnPoint.name,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(fruit);
+
+          default:
+        }
+      }
+    }
+  }
+
+  void _addCollisions() {
+    final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
+
+    if (collisionsLayer != null) {
+      for(final collision in collisionsLayer.objects) {
+        switch (collision.class_) {
+          case 'Platform':
+            final platform = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+              isPlatform: true,
+            );
+            collisionBlocks.add(platform);
+            add(platform);
+            break;
+          default:
+            final block = CollisionBlock(
+              position: Vector2(collision.x, collision.y),
+              size: Vector2(collision.width, collision.height),
+            );
+            collisionBlocks.add(block);
+            add(block);
+        }
+      }
+    }
+    player.collisionBlocks = collisionBlocks;
+  }
+}
