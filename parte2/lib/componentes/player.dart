@@ -5,6 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 
 import '../CoinGame.dart';
+import 'collision_block.dart';
+import 'custom_hitbox.dart';
 
 enum PlayerState { idle, running, jumping, falling }
 
@@ -200,4 +202,3 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 }
-
