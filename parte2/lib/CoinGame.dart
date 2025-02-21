@@ -29,8 +29,12 @@ class CoinGame extends FlameGame
     await images.loadAllImages();
     overlays.add('startMenu');
 
-    hud = Hud();
+    // Creamos el Hud y le pasamos el jugador para que tenga acceso a la salud
+    hud = Hud(player);
     add(hud);
+
+    // Añadimos al jugador al juego
+    add(player);
   }
 
   Future<void> startMusic() async {
@@ -48,6 +52,7 @@ class CoinGame extends FlameGame
     isGameStarted = true;
     isGameOver = false;
     fruitCount = 0;
+    player.health = 100; // Restauramos la salud al comenzar el juego
     overlays.remove('startMenu');
     overlays.remove('gameOver');
     startMusic();
@@ -79,6 +84,13 @@ class CoinGame extends FlameGame
     children.forEach((component) => component.removeFromParent());
 
     overlays.add('gameOver');
+  }
+
+  // Método para reducir la salud del jugador (cuando colisiona con un enemigo o similar)
+  void reducePlayerHealth(int damage) {
+    if (!isGameOver) {
+      player.reduceHealth(damage);
+    }
   }
 }
 

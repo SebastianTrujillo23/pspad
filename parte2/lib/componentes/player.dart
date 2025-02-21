@@ -13,7 +13,7 @@ import 'fruit.dart';
 enum PlayerState { idle, running, jumping, falling }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<CoinGame>, KeyboardHandler,  CollisionCallbacks {
+    with HasGameRef<CoinGame>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
     position,
@@ -35,21 +35,21 @@ class Player extends SpriteAnimationGroupComponent
   bool isOnGround = false;
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
-  CustomHitbox  hitbox = CustomHitbox (
+  CustomHitbox hitbox = CustomHitbox(
     offsetX: 10,
     offsetY: 4,
     width: 14,
     height: 28,
   );
 
+  int health = 100; // La salud del jugador
+
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
-    // debugMode = true;
     add(RectangleHitbox(
         position: Vector2(hitbox.offsetX, hitbox.offsetY),
-        size: Vector2(hitbox.width, hitbox.height)
-    ));
+        size: Vector2(hitbox.width, hitbox.height)));
     return super.onLoad();
   }
 
@@ -58,13 +58,13 @@ class Player extends SpriteAnimationGroupComponent
     _updatePlayerMovement(dt);
     _updatePlayerState();
     _checkHorizontalCollisions();
-    _apllyGravity(dt);
+    _applyGravity(dt);
     _checkVerticalCollisions();
     super.update(dt);
   }
 
   @override
-  bool onKeyEvent( KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     horizontalMovement = 0;
     final isLeftkeyPressed = keysPressed.contains(LogicalKeyboardKey.keyA) ||
         keysPressed.contains(LogicalKeyboardKey.arrowLeft);
@@ -91,7 +91,6 @@ class Player extends SpriteAnimationGroupComponent
     jumpingAnimation = _spriteAnimation('Jump', 1);
     fallingAnimation = _spriteAnimation('Fall', 1);
 
-    // List of all animations
     animations = {
       PlayerState.idle: idleAnimation,
       PlayerState.running: runningAnimation,
@@ -99,7 +98,6 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
     };
 
-    // Set current animation
     current = PlayerState.idle;
   }
 
@@ -117,28 +115,23 @@ class Player extends SpriteAnimationGroupComponent
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
-    if(velocity.x < 0 && scale.x > 0) {
+    if (velocity.x < 0 && scale.x > 0) {
       flipHorizontallyAroundCenter();
     } else if (horizontalMovement > 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();
     }
 
-    // Check if moving, set running
     if (velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
 
-    // Check if falling, set to falling
-    if(velocity.y > 0) playerState = PlayerState.falling;
+    if (velocity.y > 0) playerState = PlayerState.falling;
 
-    // Checks if jumping, set to jumping
     if (velocity.y < 0) playerState = PlayerState.jumping;
 
     current = playerState;
   }
 
   void _updatePlayerMovement(double dt) {
-    if(hasJumped && isOnGround) _playerJump(dt);
-
-    // if (velocity.y > _gravity) isOnGround = false; // Esto es opcional
+    if (hasJumped && isOnGround) _playerJump(dt);
 
     velocity.x = horizontalMovement * moveSpeed;
     position.x += velocity.x * dt;
@@ -170,7 +163,7 @@ class Player extends SpriteAnimationGroupComponent
     }
   }
 
-  void _apllyGravity(double dt) {
+  void _applyGravity(double dt) {
     velocity.y += _gravity;
     velocity.y = velocity.y.clamp(-_jumpForce, _terminalVelocity);
     position.y += velocity.y * dt;
@@ -202,5 +195,11 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
+  }
+
+  // Método para reducir la salud del jugador
+  void reduceHealth(int amount) {
+    health -= amount;
+    if (health < 0) health = 0;
   }
 }
