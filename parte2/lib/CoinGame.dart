@@ -4,6 +4,9 @@ import 'package:flame/game.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:ui';
+
+import 'componentes/Level.dart';
 
 class CoinGame extends FlameGame {
   @override
@@ -14,11 +17,16 @@ class CoinGame extends FlameGame {
 
   @override
   FutureOr<void> onLoad() {
-    cam = CameraComponent.withFixedResolution(
-        world: world, width: 640, height: 360);
-    cam.viewfinder.anchor = Anchor.topLeft;
+    Future<void> onLoad() async {
+      // Cargar todas las imagenes dentro del cache
+      await images.loadAllImages();
 
-    addAll([cam, world]);
-    return super.onLoad();
+      cam = CameraComponent.withFixedResolution(
+          world: world, width: 640, height: 360);
+      cam.viewfinder.anchor = Anchor.topLeft;
+
+      addAll([cam, world]);
+
+      return super.onLoad();
+    }
   }
-}
