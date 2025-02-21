@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'dart:ui';
 
-import 'componentes/Level.dart';
+import 'componentes/level.dart';
 
 class CoinGame extends FlameGame {
   @override
@@ -30,3 +30,4 @@ class CoinGame extends FlameGame {
       return super.onLoad();
     }
   }
+}
