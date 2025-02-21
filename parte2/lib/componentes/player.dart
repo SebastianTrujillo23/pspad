@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:parte2/componentes/utils.dart';
 
 import '../CoinGame.dart';
 import 'collision_block.dart';
 import 'custom_hitbox.dart';
+import 'fruit.dart';
 
 enum PlayerState { idle, running, jumping, falling }
 
