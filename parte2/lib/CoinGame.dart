@@ -7,6 +7,7 @@ import 'package:flutter/painting.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
+import 'componentes/hud.dart';
 import 'componentes/level.dart';
 import 'componentes/player.dart';
 
