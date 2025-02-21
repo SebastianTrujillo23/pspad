@@ -1,11 +1,13 @@
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
+import 'CoinGame.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
   // This widget is the root of your application.
   @override
