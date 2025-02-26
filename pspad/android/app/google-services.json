@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "826723606162",
+    "project_id": "pspad-37883",
+    "storage_bucket": "pspad-37883.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826723606162:android:459b5dcd0f6ad311dad04b",
+        "android_client_info": {
+          "package_name": "com.example.pspad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMHmstjO3QR86FSmDbESB5H6CwWb2U0p8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
